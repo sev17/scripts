@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" 
+           Name="SqlMsi" 
+           Language="1033" 
+           Version="1.0.0" 
+           Manufacturer="Raymond James" 
+           UpgradeCode="5D7D77A6-C8A7-4AE3-81C7-884E02AC2D8C">
+    <Package Description="Execute SQL script using sqlcmd.exe" 
+             InstallerVersion="200" 
+             Compressed="yes" />
+
+    <Media Id="1" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir" />
+    <DirectoryRef Id="TARGETDIR">
+      <Component  Id="Version" Guid="E1B7D00A-D6D8-4694-B4E0-E9AF67877119">
+        <RegistryKey Root="HKLM" Key="Software\SqlMsi">
+          <RegistryValue Name="Version" Type="string" Value="1.0.0" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+      
+    <Feature Id="DefaultFeature" Level="1">
+      <ComponentRef Id="Version" />
+    </Feature>
+
+    <MajorUpgrade
+        AllowDowngrades="no"
+        AllowSameVersionUpgrades="yes"
+        Schedule="afterInstallFinalize"
+        DowngradeErrorMessage="Cannot downgrade." />
+
+    <InstallExecuteSequence>
+      <Custom Action="sqlcmd.cmd" After="InstallFiles">NOT Installed</Custom>
+      <!-- Ensure this runs after the CA to set up the property for its cmd line -->
+      <Custom Action="sqlcmd" After="sqlcmd.cmd">NOT Installed</Custom>
+    </InstallExecuteSequence>
+
+    <!-- Find sqlcmd.exe path  -->
+    <Property Id="SQLBINDIR">
+      <RegistrySearch Id="SqlBinDir11x64" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\110\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" Win64="yes" />
+      <RegistrySearch Id="SqlBinDir10x64" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\100\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" Win64="yes" />
+      <RegistrySearch Id="SqlBinDir90x64" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\90\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" Win64="yes" />
+      <RegistrySearch Id="SqlBinDir11" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\110\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" />
+      <RegistrySearch Id="SqlBinDir10" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\100\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" />
+      <RegistrySearch Id="SqlBinDir90" 
+                      Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SQL Server\90\Tools\ClientSetup" 
+                      Name="Path" 
+                      Type="raw" />
+                     
+    </Property>
+
+    <!-- Need to use "property" CA to get variable substitution -->
+    <CustomAction Id="sqlcmd.cmd" 
+                  Property="sqlcmd" 
+                  Value="&quot;[SQLBINDIR]sqlcmd.exe&quot; -E -S $(var.serverinstance) -V 1 -i &quot;$(var.inputfile)&quot; -o &quot;$(var.outputfile)&quot;" />
+
+    <!-- Note that the cmd line and args will come from a property with the same name as the CA, this has been set by the CA above -->
+    <CustomAction Id="sqlcmd" 
+                  BinaryKey="WixCA" 
+                  DllEntry="CAQuietExec" 
+                  Return="check" 
+                  Execute="deferred" 
+                  Impersonate="yes" />
+  </Product>
+</Wix>

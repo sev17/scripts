@@ -1,0 +1,1 @@
+$dbs = cat c:\oracle\tnsadmin\tnsnames.ora | %{$_ -replace " = ",","} | convertfrom-csv -Delimiter ',' -Header dbname,fill | select -expandproperty dbname
