@@ -60,7 +60,7 @@ changetype: add
 objectClass: top
 objectClass: orclNetService
 cn: $($LDAPDescriptor)
-orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=$($LDAPDescriptor)_svc.rjf.com)))
+orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=$($LDAPDescriptor)_svc.yourdomain.com)))
 "@
 
 Add-Content -Value $value -Path $path -WhatIf:$false
@@ -79,7 +79,7 @@ changetype: add
 objectClass: top
 objectClass: orclNetService
 cn: $($LDAPDescriptor)
-orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=$($LDAPDescriptor)_ad.rjf.com)))
+orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=$($LDAPDescriptor)_ad.yourdomain.com)))
 "@
 
 Add-Content -Value $value -Path $path -WhatIf:$false
@@ -122,7 +122,7 @@ changetype: add
 objectClass: top
 objectClass: orclNetService
 cn: cd_$($LDAPDescriptor)
-orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SID=$($LDAPDescriptor)_ad.rjf.com)))
+orclNetDescString: (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=$($ScanAddress))(PORT=1521)))(CONNECT_DATA=(SID=$($LDAPDescriptor)_ad.yourdomain.com)))
 "@
 
     Add-Content -Value $value -Path $path -WhatIf:$false
