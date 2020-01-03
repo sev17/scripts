@@ -41,8 +41,8 @@ Setup keytab access for AD account to authenicate to ADAM or AD LDS servers:
 
 2. ktutil is an interactive command run following ktutil commands:
 
-ktutil: addent -password -p youralias@RJF.COM -k 1 -e RC4-HMAC
-Password for youralias@RJF.COM: [enter password for username]
+ktutil: addent -password -p youralias@yourdomain.COM -k 1 -e RC4-HMAC
+Password for youralias@yourdomain.COM: [enter password for username]
 ktutil: wkt /Users/youralias/bin/ldap.keytab
 ktuitl: q
 
@@ -54,7 +54,7 @@ LDAPSERVERS="yourLDAPserver1xb:17010 yourLDAPserver1xa:17010"
 #For Testing
 #LDAPSERVERS="yourLDAPserver1xb:17010 yourLDAPserver1xa:17010"
 #Change this account to your alias or service account
-LDAP_ADMIN="youralias@RJF.COM"
+LDAP_ADMIN="youralias@yourdomain.COM"
 LDAP_KEYTAB="${SCRIPT_DIR}/ldap.keytab"
 
 #######################
